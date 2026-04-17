@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>حاسبة اختبار SDI® — PMHouse</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Tajawal',sans-serif;background:#f1f5f9;color:#1e293b;line-height:1.7;min-height:100vh}
+.hdr{background:linear-gradient(135deg,#0f172a,#1e293b,#0f3460);color:#fff;padding:24px 16px;text-align:center}
+.hdr h1{font-size:24px;font-weight:900;letter-spacing:-.5px}
+.hdr p{font-size:12px;opacity:.7;margin-top:3px}
+.wrap{max-width:800px;margin:0 auto;padding:10px 8px}
+.inst{background:#fefce8;border:1px solid #facc15;border-radius:8px;padding:8px 12px;margin-bottom:12px;font-size:12px;line-height:1.8}
+.sec{background:#fff;border-radius:12px;padding:12px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,.04);border:1px solid #e5e7eb}
+.sec-title{font-size:15px;font-weight:700;margin-bottom:4px}
+.badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:600;margin-bottom:8px}
+.badge-good{background:#dbeafe;color:#1e40af}
+.badge-bad{background:#fee2e2;color:#991b1b}
+.qb{border-radius:8px;padding:8px 10px;margin-bottom:6px;border:1.5px solid #e5e7eb;background:#f9fafb;transition:all .2s}
+.qb.ok{border-color:#16a34a;background:#f0fdf4}
+.qb.err{border-color:#dc2626;background:#fef2f2}
+.qt{font-weight:700;font-size:12px;margin-bottom:6px;color:#1e293b}
+.qn{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:#e2e8f0;font-size:10px;font-weight:800;margin-left:4px}
+.opts{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px}
+.opt{border-radius:6px;padding:5px 3px;text-align:center;background:#fff;border:1px solid #e5e7eb22}
+.opt-bl{border-top:3px solid #2563eb}
+.opt-rd{border-top:3px solid #dc2626}
+.opt-gr{border-top:3px solid #16a34a}
+.opt-label{font-size:10px;line-height:1.4;min-height:36px;display:flex;align-items:center;justify-content:center;margin-bottom:3px;color:#374151}
+.opt input{width:44px;height:30px;border:2px solid #d1d5db;border-radius:5px;text-align:center;font-size:14px;font-weight:700;outline:none;font-family:'Tajawal';background:#fff}
+.opt input:focus{border-color:#3b82f6;box-shadow:0 0 0 2px rgba(59,130,246,.15)}
+.rsum{text-align:center;margin-top:3px;font-size:11px;font-weight:600}
+.ctots{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;border-top:2px dashed #e5e7eb;padding-top:8px;margin-top:4px}
+.ctot{text-align:center;padding:6px;border-radius:6px}
+.ctot-bl{background:#dbeafe;color:#2563eb}
+.ctot-rd{background:#fee2e2;color:#dc2626}
+.ctot-gr{background:#dcfce7;color:#16a34a}
+.ctot .lb{font-size:9px}.ctot .vl{font-size:20px;font-weight:800}
+.errmsg{background:#fef2f2;color:#991b1b;padding:7px 12px;border-radius:6px;border:1px solid #fca5a5;text-align:center;font-size:12px;margin-bottom:8px}
+.btn-calc{width:100%;padding:12px;font-size:15px;font-weight:800;font-family:'Tajawal';border:none;border-radius:8px;background:linear-gradient(135deg,#0f172a,#1e40af);color:#fff;cursor:pointer;margin-bottom:5px}
+.btn-calc:hover{opacity:.9}
+.btn-rst{width:100%;padding:8px;font-size:13px;font-weight:600;font-family:'Tajawal';border:2px solid #d1d5db;border-radius:8px;background:#fff;color:#6b7280;cursor:pointer}
+.btn-rst:hover{border-color:#dc2626;color:#dc2626}
+.res-wrap{margin-top:16px}
+.res-card{background:#fff;border-radius:12px;padding:14px;box-shadow:0 2px 10px rgba(0,0,0,.06);border:1px solid #e5e7eb}
+.res-title{font-size:18px;font-weight:800;text-align:center;margin-bottom:14px}
+.rbox{border-radius:10px;padding:12px;margin-bottom:12px;border:2px solid}
+.tri-wrap{background:#fafafa;border-radius:10px;padding:10px 4px;border:1px solid #e5e7eb;margin-bottom:12px}
+.tri-title{text-align:center;font-size:13px;font-weight:700;margin-bottom:4px;color:#374151}
+.tri-sub{text-align:center;font-size:10px;color:#9ca3af;margin-bottom:6px}
+#sdi-canvas{display:block;margin:0 auto;max-width:100%}
+.cseq{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.cstage{padding:4px 12px;border-radius:6px;font-weight:700;font-size:12px;color:#fff;text-align:center}
+.cstage-lbl{font-size:9px;color:#9ca3af}
+.analysis-box{border:2px solid #6366f1;border-radius:10px;padding:14px;background:linear-gradient(135deg,#eef2ff,#f5f3ff);margin-bottom:12px}
+.analysis-title{font-size:17px;font-weight:800;margin-bottom:10px;color:#4338ca}
+.analysis-text{font-size:12px;line-height:2.1;color:#1e293b}
+.analysis-text p{margin-bottom:10px}
+.tbl-wrap{border:2px solid #cbd5e1;border-radius:10px;padding:12px;background:#fff;margin-bottom:12px}
+.tbl-wrap table{width:100%;border-collapse:collapse;font-size:11px}
+.tbl-wrap th,.tbl-wrap td{padding:6px;border:1px solid #e2e8f0}
+.tbl-wrap thead{background:#f1f5f9}
+.footer{text-align:center;padding:14px 0;font-size:10px;color:#9ca3af}
+.hidden{display:none}
+/* Registration */
+.reg-card{background:#fff;border-radius:14px;padding:20px 16px;margin:16px auto;max-width:440px;box-shadow:0 4px 20px rgba(0,0,0,.08);border:1px solid #e5e7eb}
+.reg-card h2{font-size:18px;font-weight:800;text-align:center;margin-bottom:4px}
+.reg-card>p{font-size:12px;color:#6b7280;text-align:center;margin-bottom:14px}
+.fg{margin-bottom:10px}.fg label{display:block;font-size:12px;font-weight:700;margin-bottom:3px}
+.fg input,.fg select{width:100%;padding:9px 12px;border:2px solid #d1d5db;border-radius:8px;font-size:13px;font-family:'Tajawal';outline:none;background:#f9fafb}
+.fg input:focus,.fg select:focus{border-color:#3b82f6}.fg .ef{border-color:#dc2626!important}
+.pw-wrap{position:relative}
+.pw-wrap input{padding-left:36px}
+.pw-toggle{position:absolute;left:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:16px;color:#9ca3af;padding:2px;line-height:1}
+.wa-box{background:#dcfce7;border:2px solid #16a34a;border-radius:10px;padding:10px;text-align:center;margin:12px 0}
+.wa-box p{font-size:11px;color:#166534;margin-bottom:6px}
+.wa-btn{display:inline-flex;align-items:center;gap:6px;background:#25d366;color:#fff;padding:8px 20px;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;border:none;cursor:pointer;font-family:'Tajawal'}
+.wa-check{margin-top:6px;font-size:11px;color:#166534}
+.btn-reg{width:100%;padding:11px;font-size:14px;font-weight:800;font-family:'Tajawal';border:none;border-radius:8px;background:linear-gradient(135deg,#0f172a,#1e40af);color:#fff;cursor:pointer}
+.btn-save{width:100%;padding:10px;font-size:13px;font-weight:700;font-family:'Tajawal';border:none;border-radius:8px;background:#059669;color:#fff;cursor:pointer;margin-top:10px;display:flex;align-items:center;justify-content:center;gap:6px}
+/* Admin */
+.admin-panel{background:#fff;border-radius:12px;padding:16px;margin:16px auto;max-width:900px;box-shadow:0 4px 20px rgba(0,0,0,.1);border:1px solid #e5e7eb}
+.admin-panel h2{font-size:18px;font-weight:800;margin-bottom:12px}
+.admin-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.admin-stat{background:#f8fafc;border-radius:8px;padding:10px;text-align:center;border:1px solid #e5e7eb}
+.admin-stat .n{font-size:24px;font-weight:800;color:#1e40af}.admin-stat .l{font-size:10px;color:#6b7280}
+.user-card{background:#f8fafc;border:1px solid #e5e7eb;border-radius:8px;padding:10px;margin-bottom:8px}
+.user-card h4{font-size:13px;font-weight:700;margin-bottom:4px}
+.user-card .meta{font-size:10px;color:#6b7280;line-height:1.6}
+.user-card .rp{font-size:11px;margin-top:6px;padding:6px 8px;background:#fff;border-radius:6px;border:1px solid #e5e7eb}
+@media(max-width:500px){.opt-label{font-size:9px;min-height:30px}.opt input{width:38px;height:26px;font-size:12px}.admin-stats{grid-template-columns:1fr}}
+@media print{
+  body{background:#fff!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .hdr,.inst,.btn-calc,.btn-rst,.btn-save,.btn-reg,.errmsg,.footer,#err-box,#step-reg,#user-bar,.wa-box{display:none!important}
+  .sec{display:none!important}
+  .res-wrap{margin-top:0!important}
+  .res-card{box-shadow:none!important;border:none!important;padding:0!important}
+  .rbox,.tri-wrap,.analysis-box,.tbl-wrap{break-inside:avoid;page-break-inside:avoid}
+  .cstage,.ctot-bl,.ctot-rd,.ctot-gr,td[style*="background"]{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  canvas{max-width:100%!important}
+  button[onclick*="doLogout"],button[onclick*="saveResults"]{display:none!important}
+}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <h1>حاسبة اختبار SDI®</h1>
+  <p>استبيان تحديد نقاط القوة الشخصية والاستخدام الأمثل لها — PMHouse</p>
+</div>
+
+<div class="wrap">
+  <!-- STEP 1: Welcome -->
+  <div id="step-reg">
+    <!-- Landing: Two buttons -->
+    <div id="landing" class="reg-card" style="text-align:center">
+      <div style="font-size:48px;margin-bottom:6px">🧠</div>
+      <h2 style="font-size:20px;margin-bottom:2px">اختبار تحديد نقاط القوة الشخصية</h2>
+      <p style="font-size:12px;color:#6b7280;margin-bottom:20px">اكتشف منظومة دوافعك وأسلوبك في التعامل مع الآخرين والصراعات</p>
+      
+      <button onclick="showNewReg()" style="width:100%;padding:13px;font-size:15px;font-weight:800;font-family:'Tajawal';border:none;border-radius:10px;background:linear-gradient(135deg,#0f172a,#1e40af);color:#fff;cursor:pointer;margin-bottom:8px;display:flex;align-items:center;justify-content:center;gap:8px">
+        <span style="font-size:20px">✨</span> مستخدم جديد — سجّل وابدأ
+      </button>
+      
+      <button onclick="showLogin()" style="width:100%;padding:12px;font-size:14px;font-weight:700;font-family:'Tajawal';border:2px solid #e5e7eb;border-radius:10px;background:#fff;color:#374151;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px">
+        <span style="font-size:18px">👤</span> عندي حساب — دخول مباشر
+      </button>
+      
+      <div style="margin-top:16px;padding-top:12px;border-top:1px solid #f1f5f9">
+        <div style="font-size:10px;color:#94a3b8;margin-bottom:6px">أكثر من 500+ متدرب أكملوا الاختبار</div>
+        <div style="display:flex;justify-content:center;gap:16px;font-size:10px;color:#6b7280">
+          <span>⏱ 10 دقائق</span><span>📊 20 سؤال</span><span>🎯 7 أنماط شخصية</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form: New Registration -->
+    <div id="form-new" class="reg-card hidden">
+      <button onclick="showLanding()" style="background:none;border:none;font-size:13px;color:#6b7280;cursor:pointer;font-family:'Tajawal';margin-bottom:8px">→ رجوع</button>
+      <h2 style="font-size:17px">✨ حساب جديد</h2>
+      <p style="font-size:11px;color:#6b7280;margin-bottom:12px">بياناتك محفوظة ولن تُشارك مع أي طرف خارجي</p>
+      <div class="fg"><label>الاسم الكامل *</label><input type="text" id="r-name" placeholder="أدخل اسمك الكامل"></div>
+      <div class="fg"><label>البريد الإلكتروني *</label><input type="email" id="r-email" placeholder="example@email.com" dir="ltr"></div>
+      <div class="fg"><label>الدولة *</label><select id="r-country"><option value="">اختر دولتك</option><option>السعودية</option><option>الإمارات</option><option>مصر</option><option>الكويت</option><option>قطر</option><option>البحرين</option><option>عُمان</option><option>الأردن</option><option>العراق</option><option>لبنان</option><option>فلسطين</option><option>سوريا</option><option>ليبيا</option><option>تونس</option><option>الجزائر</option><option>المغرب</option><option>السودان</option><option>اليمن</option><option>أخرى</option></select></div>
+      <div class="fg"><label>رقم الجوال *</label><input type="tel" id="r-phone" placeholder="+966 5xxxxxxxx" dir="ltr"></div>
+      <div class="fg"><label>كلمة المرور *</label><div class="pw-wrap"><input type="password" id="r-pass" placeholder="4 أحرف على الأقل"><button type="button" class="pw-toggle" onclick="togglePw('r-pass',this)">👁</button></div></div>
+      <div class="fg"><label>تأكيد كلمة المرور *</label><div class="pw-wrap"><input type="password" id="r-pass2" placeholder="أعد إدخال كلمة المرور"><button type="button" class="pw-toggle" onclick="togglePw('r-pass2',this)">👁</button></div></div>
+      <div class="fg"><label>سؤال الأمان *</label><select id="r-sq"><option value="">اختر سؤال الأمان</option><option value="city">ما اسم المدينة التي وُلدت فيها؟</option><option value="school">ما اسم أول مدرسة درست فيها؟</option><option value="friend">ما اسم أقرب صديق في طفولتك؟</option><option value="pet">ما اسم حيوانك الأليف الأول؟</option><option value="mother">ما اسم والدتك الأول؟</option></select></div>
+      <div class="fg"><label>إجابة سؤال الأمان *</label><input type="text" id="r-sa" placeholder="أدخل الإجابة (ستحتاجها لاسترجاع كلمة المرور)"></div>
+      <div class="wa-box">
+        <p>📲 انضم لقناة PMHouse على واتساب لمتابعة كل جديد</p>
+        <a href="https://whatsapp.com/channel/0029Vb7S37NDJ6H30UKcoV35" target="_blank" class="wa-btn" onclick="document.getElementById('wa-j').checked=true">📱 انضم للقناة</a>
+        <div class="wa-check"><label><input type="checkbox" id="wa-j"> انضممت للقناة ✓</label></div>
+      </div>
+      <div id="reg-err"></div>
+      <button class="btn-reg" onclick="doRegister()">ابدأ الاختبار ←</button>
+    </div>
+
+    <!-- Form: Existing User Login -->
+    <div id="form-login" class="reg-card hidden">
+      <button onclick="showLanding()" style="background:none;border:none;font-size:13px;color:#6b7280;cursor:pointer;font-family:'Tajawal';margin-bottom:8px">→ رجوع</button>
+      <h2 style="font-size:17px">👤 تسجيل الدخول</h2>
+      <p style="font-size:11px;color:#6b7280;margin-bottom:12px">أدخل بياناتك المسجلة سابقاً</p>
+      <div class="fg"><label>البريد الإلكتروني *</label><input type="email" id="l-email" placeholder="بريدك المسجل" dir="ltr"></div>
+      <div class="fg"><label>كلمة المرور *</label><div class="pw-wrap"><input type="password" id="l-pass" placeholder="كلمة المرور"><button type="button" class="pw-toggle" onclick="togglePw('l-pass',this)">👁</button></div></div>
+      <div id="login-err"></div>
+      <button class="btn-reg" onclick="doLogin()">دخول ←</button>
+      <div style="text-align:center;margin-top:10px;font-size:11px;color:#94a3b8">
+        <a href="javascript:showForgot()" style="color:#f59e0b;font-weight:600">نسيت كلمة المرور؟</a>
+        &nbsp;|&nbsp;
+        ليس لديك حساب؟ <a href="javascript:showNewReg()" style="color:#2563eb;font-weight:600">سجّل الآن</a>
+      </div>
+    </div>
+
+    <!-- Forgot Password: 3-step flow -->
+    <div id="form-forgot" class="reg-card hidden">
+      <button onclick="showLogin()" style="background:none;border:none;font-size:13px;color:#6b7280;cursor:pointer;font-family:'Tajawal';margin-bottom:8px">→ رجوع لتسجيل الدخول</button>
+      <h2 style="font-size:17px">🔑 نسيت كلمة المرور</h2>
+      <!-- Step 1: Enter email -->
+      <div id="fg-s1">
+        <p style="font-size:11px;color:#6b7280;margin-bottom:12px">أدخل بريدك الإلكتروني المسجل</p>
+        <div class="fg"><label>البريد الإلكتروني *</label><input type="email" id="f-email" placeholder="example@email.com" dir="ltr"></div>
+      </div>
+      <!-- Step 2: Answer security question -->
+      <div id="fg-s2" class="hidden">
+        <p style="font-size:11px;color:#166534;margin-bottom:8px;background:#dcfce7;padding:6px 10px;border-radius:6px;text-align:center">✅ تم العثور على حسابك. أجب على سؤال الأمان:</p>
+        <div class="fg"><label id="fg-sq-text" style="color:#1e40af;font-weight:800">سؤال الأمان</label><input type="text" id="f-sa" placeholder="أدخل إجابتك"></div>
+      </div>
+      <!-- Step 3: Set new password -->
+      <div id="fg-s3" class="hidden">
+        <p style="font-size:11px;color:#166534;margin-bottom:8px;background:#dcfce7;padding:6px 10px;border-radius:6px;text-align:center">✅ إجابة صحيحة! أدخل كلمة المرور الجديدة:</p>
+        <div class="fg"><label>كلمة المرور الجديدة *</label><div class="pw-wrap"><input type="password" id="f-newpass" placeholder="4 أحرف على الأقل"><button type="button" class="pw-toggle" onclick="togglePw('f-newpass',this)">👁</button></div></div>
+        <div class="fg"><label>تأكيد كلمة المرور *</label><div class="pw-wrap"><input type="password" id="f-newpass2" placeholder="أعد كتابة كلمة المرور"><button type="button" class="pw-toggle" onclick="togglePw('f-newpass2',this)">👁</button></div></div>
+      </div>
+      <div id="forgot-result"></div>
+      <button id="forgot-btn" class="btn-reg" style="background:linear-gradient(135deg,#92400e,#f59e0b)" onclick="doForgot()">التالي ←</button>
+    </div>
+  </div>
+
+  <!-- STEP 2: Quiz -->
+  <div id="step-quiz" class="hidden">
+    <div id="user-bar" style="display:flex;justify-content:space-between;align-items:center;background:#fff;border-radius:10px;padding:8px 12px;margin-bottom:8px;border:1px solid #e5e7eb;font-size:12px">
+      <span id="user-greet" style="color:#374151;font-weight:600">👋 مرحباً</span>
+      <div style="display:flex;gap:4px">
+        <button id="btn-admin-back" class="hidden" onclick="renderAdmin()" style="background:#fef3c7;border:1px solid #f59e0b;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:700;font-family:'Tajawal';color:#92400e;cursor:pointer">⚙ لوحة الأدمن</button>
+        <button onclick="doLogout()" style="background:#fee2e2;border:1px solid #fca5a5;border-radius:6px;padding:4px 12px;font-size:11px;font-weight:700;font-family:'Tajawal';color:#dc2626;cursor:pointer">🚪 خروج</button>
+      </div>
+    </div>
+    <div class="inst"><b>تعليمات:</b> وزّع <b>10 درجات</b> على الخيارات الثلاثة في كل سؤال. أعطِ الدرجة الأعلى للخيار الأقرب لحالتك.</div>
+    <div class="sec" id="sec1"></div>
+    <div class="sec" id="sec2"></div>
+    <div id="err-box"></div>
+    <button class="btn-calc" onclick="doCalc()">احسب النتيجة</button>
+    <button class="btn-rst" onclick="doReset()">إعادة تعيين</button>
+  </div>
+
+  <div class="res-wrap hidden" id="results"></div>
+  <div id="admin-panel" class="hidden"></div>
+  <div class="footer">أداة تعليمية — SDI® علامة تجارية مسجلة لمؤسسة Personal Strengths Publishing — PMHouse</div>
+</div>
+
+<script>
+// ============================================================
+// SDI® PMHouse — Client (connects to backend API)
+// ============================================================
+
+const BL = "#2563eb", RD = "#dc2626", GR = "#16a34a", HB = "#7c3aed";
+const API_BASE = ''; // same origin
+
+// ============================================================
+// AUTH TOKEN STORAGE (sessionStorage — not localStorage)
+// Note: token cleared when browser closes — safer default
+// ============================================================
+const TOKEN_KEY = 'sdi_token';
+const USER_KEY  = 'sdi_user';
+function saveAuth(token, user){ try{sessionStorage.setItem(TOKEN_KEY,token);sessionStorage.setItem(USER_KEY,JSON.stringify(user));}catch(_){} }
+function getToken(){ try{return sessionStorage.getItem(TOKEN_KEY);}catch(_){return null;} }
+function getStoredUser(){ try{var s=sessionStorage.getItem(USER_KEY);return s?JSON.parse(s):null;}catch(_){return null;} }
+function clearAuth(){ try{sessionStorage.removeItem(TOKEN_KEY);sessionStorage.removeItem(USER_KEY);}catch(_){} }
+
+// ============================================================
+// API HELPER
+// ============================================================
+async function api(path, opts){
+  opts = opts || {};
+  var headers = opts.headers || {};
+  headers['Content-Type'] = 'application/json';
+  var tk = getToken();
+  if(tk) headers['Authorization'] = 'Bearer ' + tk;
+  var fetchOpts = { method: opts.method||'GET', headers: headers };
+  if(opts.body) fetchOpts.body = JSON.stringify(opts.body);
+  var res;
+  try{
+    res = await fetch(API_BASE + path, fetchOpts);
+  }catch(e){
+    throw new Error('تعذر الاتصال بالخادم. تحقق من الإنترنت.');
+  }
+  var data;
+  try{ data = await res.json(); }catch(_){ data = {ok:false, error:'استجابة غير صالحة من الخادم'}; }
+  if(!res.ok || !data.ok){
+    var msg = (data && data.error) || ('خطأ في الخادم ('+res.status+')');
+    var err = new Error(msg);
+    err.status = res.status;
+    throw err;
+  }
+  return data;
+}
+
+// Download a file via authenticated fetch (for PDFs)
+async function apiDownload(path, filename){
+  var tk = getToken();
+  var headers = {};
+  if(tk) headers['Authorization'] = 'Bearer ' + tk;
+  var res;
+  try{
+    res = await fetch(API_BASE + path, { headers: headers });
+  }catch(e){
+    throw new Error('تعذر الاتصال بالخادم');
+  }
+  if(!res.ok){
+    var txt = '';
+    try{ var j = await res.json(); txt = j.error || ''; }catch(_){}
+    throw new Error(txt || ('خطأ في التحميل ('+res.status+')'));
+  }
+  var blob = await res.blob();
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = filename || 'download.pdf';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+}
+
+function togglePw(id, btn){
+  var inp = document.getElementById(id);
+  if(inp.type === 'password'){ inp.type = 'text'; btn.textContent = '🙈'; }
+  else { inp.type = 'password'; btn.textContent = '👁'; }
+}
+
+// ============================================================
+// SDI DATA (local copy for rendering — same as backend)
+// ============================================================
+const Qs=[
+[1,"أجد غاية المتعة عند","مساعدة الآخرين على أداء ما يرغبون في أدائه","جعل الآخرين يؤدون ما أرغب في أدائه","أداء ما أرغب فيه دون الاعتماد على الآخرين"],
+[2,"في أغلب الأحيان أكون","الشخص الحساس الذي يستجيب بسرعة لحاجات الآخرين","الشخص المفعم بالحيوية الذي يلاحظ الفرص بسرعة","الشخص العملي الحريص على عدم الاستعجال"],
+[3,"عندما أقابل أشخاصاً لأول مرة عادة أكون","مهتماً بمعرفة إذا سيجدونني محباً أم لا","فضولياً لمعرفة إمكانية استفادتي من العلاقة","مؤدباً وحريصاً حتى أدرك ما يريدونه مني"],
+[4,"في معظم الأحيان أجد نفسي","الشخص اللطيف الذي يعتمد عليه لتقديم المساعدة","الشخص القوي الذي يرشد الآخرين","الشخص الذي يمعن التفكير قبل الإقدام على العمل"],
+[5,"أشعر بأكبر قدر من الرضى عندما","يتخذ الآخرون القرارات وأجد كيف أساعد","يعتمد الآخرون عليّ في القرارات وأوجههم","أجد الوقت لدراسة القرار ثم أحدد ما أفعله"],
+[6,"من يعرفونني جيداً يعتمدون عليّ في","الثقة فيهم والولاء لهم","الطموح والمبادرة","الثبات على المبادئ والمعتقدات"],
+[7,"إن أكثر ما يناسبني","بذل أقصى جهدي والثقة بتقدير الآخرين","تولي القيادة والتأثير على القرارات","أن أكون صبوراً وعملياً وواثقاً"],
+[8,"أصف نفسي بأنني في أغلب الأوقات","ودود ومنفتح ومتوسم للخير في الجميع","مفعم بالحيوية وواثق بقدرتي على رؤية الفرص","حريص ومتنصت وناصر لما أعتقد بصوابه"],
+[9,"أجد العلاقة مصدر رضى عندما أستطيع","مساندة قائد قوي لدي إيمان تام به","توفير القيادة التي يرغب الآخرون في إتباعها","أن أكون حراً في إتباع مساري الخاص"],
+[10,"في أفضل حالاتي أجد المتعة في","رؤية الآخرين مستفيدين مما فعلته لأجلهم","جعل الآخرين يلجأون إلي لقيادتهم وتوجيههم","أن أكون سيد نفسي وأعمل لأجل نفسي"],
+[11,"عند مواجهة معارضة لما أقوم به غالباً","أنسحب وأضع رغباتي جانباً","أضغط بقوة لحفظ حقي في التنفيذ","أضاعف الحرص وأتحقق من موقفي"],
+[12,"إذا قررت تجاوز معارضة شخص أحاول","تغيير ما أقوم به ليكون أكثر قبولاً","إظهار خطأ حجته وإبراز قوة موقفي","مناشدته باحترام المنطق والإنصاف"],
+[13,"مع الأشخاص صعبي التعامل عادةً","أجد مسايرة رغباتهم أسهل السبل","أنظر إليهم كتحد يجب التغلب عليه","أحترم حقوقهم وأصر على احترام حقوقي"],
+[14,"عندما يعارض أحدهم رأيي بقوة عادة","أستسلم ما لم تكن المسألة بالغة الأهمية","أتحداه فوراً وأجادله بأقصى قوة","أسحب نفسي حتى أتأكد من موقفي"],
+[15,"عندما يعارضني شخص علانية عادة","أستسلم للانسجام وأعتمد على عدالته","أواجه الوضع كمعركة وأستعد لكسبها","أنسحب والتفت إلى مصالحي الخاصة"],
+[16,"إذا لم أحصل على ما أريده من العلاقة","أظل محافظاً على الأمل بالتحسن","أضغط بقوة أكبر للحصول على ما أرغبه","أقطع العلاقة وأبحث في مكان آخر"],
+[17,"عند شعوري بأن الآخرين يستغلون حسن نيتي","أستشير أشخاصاً أكثر خبرة","أؤكد حقوقي وأقاتل لما أستحقه","أحدد حقوقي بوضوح وأصر على احترامها"],
+[18,"عندما يصر شخص على أداء الأعمال بطريقته","أترك رغباتي وأتقيد بطريقته مؤقتاً","أوضح أقوى الحجج لطريقتي وأحاول تغيير رأيه","أحترم حقه في أسلوبه ما لم يتعارض مع طريقتي"],
+[19,"عندما ينتقدني الآخرون علانية عادة","أرغب في تطييب خواطرهم وتهدئة غضبهم","أتحدى بقوة حقهم في الانتقاد","أحلل كل تهمة بتفصيل وحرص"],
+[20,"عندما يسيء أحدهم للثقة التي منحتها له","أشعر بأنهم أضروا أنفسهم أكثر مني","أغضب وأتخذ خطوات لمعادلة الموقف","أحلل الخطأ وكيفية منع تكراره"]
+];
+
+const analysis={
+B:{summary:"منظومة دوافعك هي «إيثار الآخرين على الذات — الرعاية». أنت مدفوع أساساً بالاهتمام بحماية ونمو ومصلحة الآخرين.",strengths:"نقاط قوتك: الثقة بالغير، الولاء، مساعدة الغير، التواضع، تكريس النفس، الاهتمام بالآخرين، ودعم الآخرين. أسلوبك المفضل هو الصراحة والوضوح في الاستجابة لرغبات الآخرين، والبحث عن سبل لمساعدتهم وجعل حياتهم أسهل. تتحاشى أن تكون عبئاً ثقيلاً عليهم، وتسعى لتحقيق طموحاتهم والتحقق من حصولهم على التقدير اللازم والدفاع عن حقوقهم. البيئة المحفزة لك تتضمن الصراحة والود وتقديم المساعدة واحترام الرغبات والمشاعر والدعم والمساندة والتعزيز والثقة والحساسية الاجتماعية والإخلاص والولاء.",weaknesses:"نقاط الحذر: في حالة المبالغة قد تبدو ساذجاً أو أعمى في ثقتك بالآخرين، ومستنزفاً في مساعدة الغير، ومنغلقاً على نفسك، وخانعاً ومتدللاً ومضحياً بنفسك. يجب الحذر من الرغبة الشديدة في المحافظة على التوافق لدرجة عدم العمل على تحقيق ما تريد، وتصديق الآخرين بسرعة فائقة، والولاء لدرجة تمكين الآخرين من استغلالك، والسرعة في لوم الذات إذا حدث أي خطأ، والمكافحة للحفاظ على التوافق لدرجة عدم مجابهة الواقع."},
+R:{summary:"منظومة دوافعك هي «الجزم — توجيه الآخرين». أنت مدفوع أساساً بإنجاز العمل وتنظيم الأشخاص والموارد لتحقيق النتائج.",strengths:"نقاط قوتك: الثقة بالنفس، الطموح، الإقناع، القوة، سرعة الاستجابة، حب المنافسة، والمجازفة. أسلوبك المفضل هو المنافسة على السلطة والمسؤولية والمواقع القيادية، وممارسة القدرة على إقناع واستمالة الآخرين. تطالب بأهمية اليقظة والاستعداد لاستغلال الفرص واتخاذ إجراءات فورية وقبول المخاطر والتحديات. البيئة المحفزة لك تتضمن توفير إمكانية التقدم والارتقاء والابتكار والإثارة والتحدي وسرعة الحركة والتحريض والمنافسة والإبداع وتطوير مستويات جديدة من الفرص والمكافآت المادية والشخصية.",weaknesses:"نقاط الحذر: في حالة المبالغة قد تبدو متحرفاً وبلا رحمة ولحوحاً ودكتاتورياً ومتسرعاً وقتالياً ومقامراً. يجب الحذر من الرغبة الشديدة في الفوز لدرجة قد تدوس على من يعترض طريقك، والعجلة الشديدة في إنجاز الأمور مما قد يؤدي لتجاهل مشاعر الآخرين، والثقة التامة بأنك على صواب مما يمنعك من الإنصات لآراء الآخرين، والسعي لتوجيه الآخرين بهدف ممارسة السلطة فقط."},
+G:{summary:"منظومة دوافعك هي «التحليل — الاستقلالية». أنت مدفوع أساساً بالتأكد من أن الأشياء قد تم التفكير بها بشكل مناسب والمحافظة على نظام هادف.",strengths:"نقاط قوتك: الحذر، التحفظ، المنهجية، التحليل، المبادئ، العدل، والمثابرة. أسلوبك المفضل هو التعامل بموضوعية مع مبادئ صحيحة والتحكم في المواقف بشكل عملي وحريص ومنصف وشديد العزم. يفكر في الأشياء ملياً وبشكل شامل قبل العمل. تقدّر الوضوح والمنطق والدقة والاعتمادية والاستخدام الفعال للموارد. البيئة المحفزة لك تتضمن توفير الوقت الكافي لاستكشاف الخيارات والمعايير الواضحة للموارد ومساندة القرارات الفردية.",weaknesses:"نقاط الحذر: في حالة المبالغة قد تبدو شكاكاً وبارداً وجامداً ومتصيداً للأخطاء وغير مرن وبلا شعور وعنيداً. يجب الحذر من الرغبة الشديدة في التحقق من الأمور مما قد يؤخر اتخاذ القرار، والحذر الشديد الذي يجعلك تلاقي صعوبة في الوثوق بالآخرين، والاعتماد على الذات لدرجة التحرم من الاتصال بمن يحبونك، وكتم أفكارك ومشاعرك عن الآخرين، والإصرار على التدقيق في الوقائع لدرجة تجاهل مشاعر الآخرين."},
+Hub:{summary:"منظومة دوافعك هي «المحور — المرونة والمحافظة على انسجام المجموعة». أنت مدفوع بمزيج متوازن من الاهتمام بالآخرين والإنجاز والتحليل.",strengths:"نقاط قوتك: المرونة، الاجتماعية، التكيف، التسامح، والبحث عن خيارات. أسلوبك المفضل هو التعامل بمرونة مع مختلف الأشخاص والمواقف. فضولي بشأن ما يفكر به الآخرون، ومنفتح وراغب في التكيف. يفخر بكونه عضواً في المجموعة ويعرف كيف يكون تابعاً مخلصاً. البيئة المحفزة لك تتضمن الصداقة والمشاركة والألفة والديمقراطية والمرح والمرونة والتفاعل مع الآخرين والاستماع لهم.",weaknesses:"نقاط الحذر: في حالة المبالغة قد تبدو ضعيف الإرادة وغير مستقر وقابلاً للتغيير وبلا هدف وضعيف الشخصية وفاقداً للتركيز. يجب الحذر من الرغبة الشديدة بأن تكون مرناً لدرجة عدم الاستقرار، والانفتاح الفكري الشديد مما يجعلك غير قادر على معرفة ما تؤمن به حقاً، والرغبة الشديدة بالاندماج، والمكافحة الشديدة للحفاظ على تعدد الخيارات مما يؤدي لعدم الالتزام بأي منهج."},
+BR:{summary:"منظومة دوافعك هي «الجزم — الرعاية». أنت تجمع بين الاهتمام بحماية الآخرين والقيادة والإنجاز.",strengths:"نقاط قوتك: الوضوح والصراحة والنصح وتوجيه الآخرين. تبحث بنشاط عن فرص مساعدة الآخرين وحفزهم لضمان حصولهم على أقصى قدر من النمو والتطور. تُثير الحماس والمساندة للنجاح في تخطي العقبات. البيئة المحفزة لك تتضمن الحماس والصداقة والود والإخلاص والثقة واحترام الآخرين ودعم المستضعفين.",weaknesses:"نقاط الحذر: في حالة المبالغة قد يُنظر إليك كشخص متدخل أو فارض لمساعدته. يجب الحذر من فرض نفسك على الآخرين وعرقلة طريقتهم، والمشاركة العاطفية المفرطة، والسعي لإرضاء الآخرين لمجرد أن تصبح محبوباً."},
+BG:{summary:"منظومة دوافعك هي «الدقة والحذر — الدعم والمساندة». أنت تجمع بين الاهتمام بالآخرين والتحليل الدقيق.",strengths:"نقاط قوتك: بناء إجراءات فعالة لحماية مصلحة الآخرين وتقديم المساعدة للاكتفاء الذاتي والاستقلالية. مساندة الأنشطة التي تقود للنمو والقتال من أجل المبادئ العادلة. البيئة المحفزة لك تتضمن الأمانة والصبر والنزاهة وفرص النمو والاستقلالية.",weaknesses:"نقاط الحذر: قد تبدو بارداً أو متحفظاً رغم نواياك الطيبة. الحذر من الاعتماد الزائد على التحليل في المواقف العاطفية، والتردد في تقديم المساعدة بسبب الرغبة في التأكد من صحة الأسلوب أولاً."},
+RG:{summary:"منظومة دوافعك هي «التعقل — المنافسة». أنت تجمع بين القيادة الحازمة والتحليل المنطقي.",strengths:"نقاط قوتك: توفير قيادة منطقية بإمكانها تقييم المخاطر والفرص. حاسم عند توفر الحقائق. يواجه المعارضة باستراتيجيات محكمة. البيئة المحفزة تتضمن الاستراتيجية والتخطيط والمهام المعقدة والتقدير للإنجازات.",weaknesses:"نقاط الحذر: قد تبدو بارداً وحسابياً. الحذر من المنافسة المبنية على المنطق الجاف دون مراعاة المشاعر، والسعي للسيطرة من خلال المعلومات بدلاً من بناء العلاقات."}
+};
+
+const cTexts={
+"R-B-G":"شخص يواجه الصراع أولاً بالجزم الذاتي القوي وتحدي المعارضين. وإذا لم يؤدِ ذلك إلى نتيجة، فإنه يبادر ببذل بعض الجهد لإعادة العلاقة والمحافظة على الانسجام. وإذا فشل كل ذلك فإنه ينسحب كملاذ أخير.",
+"R-G-B":"شخص يواجه الصراع منذ البداية بالمنافسة والرغبة في الفوز. وإذا لم ينجح التنافس والتحدي، فإنه ينسحب ويلجأ للتحليل والمنطق والعقل والنظام. وإذا لم ينجح ذلك فإنه يتنازل ولكن كحل أخير.",
+"B-R-G":"شخص يحاول أولاً وأخيراً المحافظة على الهدوء والتناغم والانسجام. وإذا لم ينجح ذلك، فإنه يقف للدفاع عن حقوقه. وإذا لم يؤدِ ذلك إلى نهاية الصراع فإنه ينسحب كملاذ أخير.",
+"B-G-R":"شخص يحاول أن يضغط بجزم للمحافظة على الهدوء والانسجام وحسن النية. وإذا فشلت هذه الجهود فإنه ينسحب في النهاية من الوضع أو العلاقة. وإذا استمر الضغط يقاتل كملاذ أخير.",
+"G-R-B":"شخص يحاول أولاً المنهج التحليلي والمنطقي المحافظ في الاستجابة للصراع. ويتبع ذلك بهجوم جازم قوي مبني على المنطق والاستراتيجيات. وإذا فشل في ذلك فإنه يتنازل من أجل المحافظة على الهدوء والانسجام ولكن كحل أخير.",
+"G-B-R":"شخص يتناول الصراع أولاً بحذر، ويفحص الوضع بعناية ومنطقية وينتظر حتى تصله جميع الحقائق قبل أن يلزم نفسه بأي شيء. وإذا لم ينجح ذلك، ولم يكن الصراع يتضمن أي من مبادئه الهامة فإنه يتنازل للآخرين من أجل المحافظة على الهدوء والانسجام. وإذا ما استمر الصراع، فإنه يبدأ القتال في النهاية، ولكن كحل أخير.",
+"[RG]-B":"شخص يواجه الصراع، ولكن ليس بشكل مباشر، إنما عبر مجموعة من الاستراتيجيات تبعاً للظروف. هو يستخدم ما يمليه عليه عقله ليشق طريقته. وإذا تم الضغط عليه بما يكفي فإنه في النهاية يتنازل ويستسلم.",
+"R-[BG]":"شخص يستعجل الجزم والتأكيد على حقه والقتال من أجل ذلك. ولكن إذا تم الضغط عليه بما يكفي فإنه إما يتنازل لبعض الوقت أو ينهي العلاقة. وذلك تبعاً للموقف الذي سيحقق له المنفعة الأكبر.",
+"[BR]-G":"شخص يحاول أن يضغط بجزم للمحافظة على الهدوء والانسجام وحسن النية. وإذا فشلت هذه الجهود فإنه ينسحب في النهاية من الوضع أو العلاقة.",
+"B-[RG]":"شخص ينشد أولاً الهدوء والتناغم والانسجام، وهو باستمرار يمتص المعارضة. إذا تعرض لضغوط أشد، فإنه يلجأ إلى استراتيجيات ذات أساس منطقي و/أو استراتيجيات جازمة للمحافظة على كماله واستقامته وللحيلولة دون حدوث هزيمة تامة.",
+"[BG]-R":"شخص يسعى بجد للمحافظة على الهدوء والانسجام، مع مراعاة خاصة لقيمة التكلفة الشخصية لهذا الجهد. وإذا فشلت هذه الجهود، فإنه في النهاية يحارب من أجل حقه ولكن فقط كملاذ أخير ويمكن أن يكون أسلوبه في القتال عاصفاً.",
+"G-[BR]":"شخص يتخذ مبدئياً موقف المعارضة المنطقي في الصراع على أساس المنطق والنظام والقوانين والمبادئ. إذا تم الضغط عليه بما يكفي فإنه يتخذ أحد الموقفين: إذا كان الصراع هاماً فإنه يتخذ موقف القتال، وإن كان غير هاماً فإنه يتنازل.",
+"[BRG]":"شخص يواجه الصراع والمعارضة بمرونة، وذلك بأسلوب يختلف وفقاً لوضع الصراع وحالته بدلاً من تطبيق تسلسل ثابت. وقد يبدو هذا الوضع مربكاً للآخرين وقد ينظرون إليه باعتباره شخص لا يمكن التنبؤ بردود أفعاله."
+};
+
+function getConflictKey(b,r,g){
+  var arr=[{l:'B',v:b},{l:'R',v:r},{l:'G',v:g}];
+  arr.sort(function(a,b){return b.v-a.v;});
+  var d01=arr[0].v-arr[1].v;
+  var d12=arr[1].v-arr[2].v;
+  if(d01<=6 && d12<=6) return '[BRG]';
+  if(d01<=6 && d12>6) return '['+arr[0].l+arr[1].l+']-'+arr[2].l;
+  if(d01>6 && d12<=6) return arr[0].l+'-['+arr[1].l+arr[2].l+']';
+  return arr[0].l+'-'+arr[1].l+'-'+arr[2].l;
+}
+
+function getMVS(b,r,g){
+  var t=b+r+g;if(t===0)return{name:"—",color:"#999",code:"Hub"};
+  var bp=b/t*100,rp=r/t*100,gp=g/t*100;
+  if(Math.abs(bp-33.3)<10&&Math.abs(rp-33.3)<10&&Math.abs(gp-33.3)<10)return{name:"المحور — المرونة والانسجام",color:HB,code:"Hub"};
+  if(bp>rp+10&&bp>gp+10)return{name:"إيثار الآخرين على الذات — الرعاية",color:BL,code:"B"};
+  if(rp>bp+10&&rp>gp+10)return{name:"الجزم — توجيه الآخرين",color:RD,code:"R"};
+  if(gp>bp+10&&gp>rp+10)return{name:"التحليل — الاستقلالية",color:GR,code:"G"};
+  if(bp>gp&&rp>gp)return{name:"الجزم — الرعاية",color:"#9333ea",code:"BR"};
+  if(bp>rp&&gp>rp)return{name:"الدقة والحذر — المساندة",color:"#0891b2",code:"BG"};
+  if(rp>bp&&gp>bp)return{name:"التعقل — المنافسة",color:"#ea580c",code:"RG"};
+  return{name:"المحور — المرونة",color:HB,code:"Hub"};
+}
+
+// ============================================================
+// STATE
+// ============================================================
+var currentUser = null;
+var lastResultId = null;    // id returned from server after submit
+
+// ============================================================
+// BUILD QUIZ SECTIONS
+// ============================================================
+function buildSection(sec, containerId){
+  var qs = Qs.filter(function(q){ return sec===1 ? q[0]<=10 : q[0]>10; });
+  var h = '<div class="sec-title">'+(sec===1?'الفقرات ١–١٠: عندما تسير الأمور بشكل جيد':'الفقرات ١١–٢٠: حالات الصراع والخلاف')+'</div>';
+  h += '<div class="badge '+(sec===1?'badge-good':'badge-bad')+'">'+(sec===1?'الحالات الإيجابية':'حالات الصراع')+'</div>';
+  qs.forEach(function(q){
+    var i = q[0]-1;
+    h += '<div class="qb" id="qb'+i+'"><div class="qt"><span class="qn">'+q[0]+'</span> '+q[1]+'</div>';
+    h += '<div class="opts">';
+    var cls = ['opt-bl','opt-rd','opt-gr'];
+    for(var oi=0; oi<3; oi++){
+      h += '<div class="opt '+cls[oi]+'" id="optw'+i+'-'+oi+'"><div class="opt-label">'+q[oi+2]+'</div>';
+      h += '<input type="number" min="0" max="10" id="q'+i+'-'+oi+'" oninput="onInp('+i+')" placeholder="—"></div>';
+    }
+    h += '</div><div class="rsum" id="rs'+i+'">المجموع: 0/10</div></div>';
+  });
+  var colIdx = sec===1 ? [0,1,2] : [3,4,5];
+  var labels = ['أزرق','أحمر','أخضر'];
+  var tcls = ['ctot-bl','ctot-rd','ctot-gr'];
+  h += '<div class="ctots">';
+  for(var ci=0; ci<3; ci++){
+    h += '<div class="ctot '+tcls[ci]+'"><div class="lb">مجموع '+labels[ci]+'</div><div class="vl" id="ct'+colIdx[ci]+'">0</div></div>';
+  }
+  h += '</div>';
+  document.getElementById(containerId).innerHTML = h;
+}
+
+function gv(id){ var el=document.getElementById(id); var v=parseInt(el.value,10); return (isNaN(v)||v<0)?0:Math.min(10,v); }
+
+function onInp(qi){
+  var s = gv('q'+qi+'-0') + gv('q'+qi+'-1') + gv('q'+qi+'-2');
+  var qb = document.getElementById('qb'+qi);
+  var rs = document.getElementById('rs'+qi);
+  if(s===10){ qb.className='qb ok'; rs.innerHTML='✓ المجموع: 10/10'; rs.style.color=GR; }
+  else if(s>10){ qb.className='qb err'; rs.innerHTML='✗ المجموع: '+s+'/10 — تجاوز الحد'; rs.style.color=RD; }
+  else { qb.className='qb'; rs.innerHTML='المجموع: '+s+'/10'; rs.style.color='#6b7280'; }
+
+  var bgs = ['#dbeafe','#fee2e2','#dcfce7'];
+  for(var oi=0; oi<3; oi++){
+    var ow = document.getElementById('optw'+qi+'-'+oi);
+    ow.style.background = gv('q'+qi+'-'+oi)>0 ? bgs[oi] : '#fff';
+    document.getElementById('q'+qi+'-'+oi).style.borderColor = s===10?GR:'#d1d5db';
+  }
+  updateTotals();
+}
+
+function updateTotals(){
+  var c = [0,0,0,0,0,0];
+  for(var i=0; i<10; i++){ c[0]+=gv('q'+i+'-0'); c[1]+=gv('q'+i+'-1'); c[2]+=gv('q'+i+'-2'); }
+  for(var i=10; i<20; i++){ c[3]+=gv('q'+i+'-0'); c[4]+=gv('q'+i+'-1'); c[5]+=gv('q'+i+'-2'); }
+  for(var j=0; j<6; j++) document.getElementById('ct'+j).textContent = c[j];
+  return c;
+}
+
+// Gather all answers as [[b,r,g]×20]
+function gatherAnswers(){
+  var answers = [];
+  for(var i=0; i<20; i++){
+    answers.push([gv('q'+i+'-0'), gv('q'+i+'-1'), gv('q'+i+'-2')]);
+  }
+  return answers;
+}
+
+// ============================================================
+// CALC & SUBMIT
+// ============================================================
+async function doCalc(){
+  var bad = [];
+  var answers = gatherAnswers();
+  for(var i=0; i<20; i++){
+    var s = answers[i][0]+answers[i][1]+answers[i][2];
+    if(s !== 10) bad.push(i+1);
+  }
+  var eb = document.getElementById('err-box');
+  if(bad.length){
+    eb.innerHTML = '<div class="errmsg">مجموع كل سؤال يجب أن يساوي 10. راجع الأسئلة: '+bad.join('، ')+'</div>';
+    document.getElementById('results').classList.add('hidden');
+    return;
+  }
+  eb.innerHTML = '<div style="background:#eff6ff;border:1px solid #93c5fd;color:#1e40af;padding:10px;border-radius:8px;text-align:center;font-size:12px">⏳ جارٍ حفظ النتيجة على الخادم...</div>';
+
+  try{
+    var resp = await api('/api/results/submit', { method: 'POST', body: { answers: answers } });
+    lastResultId = resp.result.id;
+    eb.innerHTML = '';
+    renderResults(resp.result, false);
+  }catch(err){
+    eb.innerHTML = '<div class="errmsg">تعذر حفظ النتيجة: '+err.message+'</div>';
+  }
+}
+
+function renderResults(result, isAdminView){
+  var cols = result.cols;
+  var mvs = result.mvs;
+  var sKey = result.conflictKey;
+  var tx = analysis[mvs.code] || analysis.Hub;
+  var cTx = cTexts[sKey] || 'تسلسل صراع فريد يجمع بين استراتيجيات متنوعة حسب الموقف.';
+  var cArr = [
+    {l:'B', n:'أزرق', v:cols[3], c:BL},
+    {l:'R', n:'أحمر', v:cols[4], c:RD},
+    {l:'G', n:'أخضر', v:cols[5], c:GR}
+  ].sort(function(a,b){ return b.v-a.v; });
+
+  var bgMap = {B:'#dbeafe', R:'#fee2e2', G:'#dcfce7', Hub:'#f3e8ff', BR:'#f3e8ff', BG:'#ecfeff', RG:'#fff7ed'};
+
+  var h = '<div class="res-card">';
+  if(isAdminView && result._adminInfo){
+    h += '<div style="background:#fef3c7;border:1.5px solid #f59e0b;border-radius:8px;padding:8px;text-align:center;margin-bottom:10px;font-size:12px;color:#92400e"><b>عرض أدمن</b> — '+result._adminInfo.name+' ('+result._adminInfo.email+')<br><button class="btn-rst" style="margin-top:4px;width:auto;display:inline-block;padding:3px 14px;font-size:11px" onclick="renderAdmin()">← رجوع للوحة الأدمن</button></div>';
+  }
+  h += '<div class="res-title">📊 النتائج'+(isAdminView && result._adminInfo ? ' — '+result._adminInfo.name : '')+'</div>';
+
+  // MVS box
+  h += '<div class="rbox" style="border-color:'+mvs.color+';background:'+bgMap[mvs.code]+'">';
+  h += '<div style="font-size:14px;font-weight:700;margin-bottom:5px">منظومة بواعث القيم الخاصة بك (النقطة)</div>';
+  h += '<span style="display:inline-block;background:'+mvs.color+';color:#fff;padding:3px 12px;border-radius:6px;font-weight:700;font-size:13px">'+mvs.name+'</span>';
+  h += '<div style="margin-top:6px;font-size:11px;color:#6b7280">أزرق: '+cols[0]+' | أحمر: '+cols[1]+' | أخضر: '+cols[2]+'</div></div>';
+
+  // Triangle
+  h += '<div class="tri-wrap"><div class="tri-title">مثلث تحديد نقاط القوة الشخصية SDI</div>';
+  h += '<div class="tri-sub">النقطة = منظومة بواعث القيم &bull; رأس السهم = تسلسل الصراع</div>';
+  h += '<canvas id="sdi-canvas"></canvas></div>';
+
+  // Conflict
+  h += '<div class="rbox" style="border-color:#475569;background:#f8fafc">';
+  h += '<div style="font-size:14px;font-weight:700;margin-bottom:3px">تسلسل الصراع الخاص بك (رأس السهم)</div>';
+  h += '<div style="font-size:11px;color:#6b7280;margin-bottom:8px">عند مواجهة الصراع تمر بثلاث مراحل:</div>';
+  h += '<div class="cseq">';
+  cArr.forEach(function(s,i){
+    h += '<div style="text-align:center"><div class="cstage-lbl">المرحلة '+(i+1)+'</div><div class="cstage" style="background:'+s.c+'">'+s.n+' ('+s.v+')</div></div>';
+    if(i<2) h += '<span style="font-size:14px;color:#9ca3af">←</span>';
+  });
+  h += '</div><div style="font-size:11px;color:#6b7280;text-align:center">التسلسل: '+sKey+'<br>أزرق: '+cols[3]+' | أحمر: '+cols[4]+' | أخضر: '+cols[5]+'</div></div>';
+
+  // Conflict desc
+  h += '<div class="rbox" style="border-color:#94a3b8;background:#f1f5f9"><div style="font-size:14px;font-weight:700;margin-bottom:4px">وصف تسلسل الصراع ('+sKey+')</div>';
+  h += '<p style="font-size:12px;line-height:2;color:#374151;margin:0">'+cTx+'</p></div>';
+
+  // تفهم الصراع
+  h += '<div class="rbox" style="border-color:#f59e0b;background:#fffbeb">';
+  h += '<div style="font-size:15px;font-weight:800;margin-bottom:8px;color:#92400e">تفهم الصراع</div>';
+  h += '<div style="font-size:12px;line-height:2;color:#374151">';
+  h += '<p>تسلسل الصراع لديك يعكس تغيراً متوقعاً ومتسلسلاً في الحوافز عند مواجهة حالة من الصراع أو الخلاف. يمر الصراع بثلاث مراحل متصاعدة من حيث درجة الخطورة، كما أنه من الممكن حل الصراع في أي من هذه المراحل.</p>';
+  h += '<p><b>المرحلة ١:</b> ' + (cArr[0].l==='B'?'تحاول استيعاب احتياجات الآخرين ببساطة.':cArr[0].l==='R'?'ترتقي إلى مستوى التحدي المعروض ببساطة.':'تلتزم الحذر والحكمة ببساطة.') + '</p>';
+  h += '<p><b>المرحلة ٢:</b> ' + (cArr[1].l==='B'?'تستسلم وتترك المعارضة للمضي في طريقها.':cArr[1].l==='R'?'ترى ضرورة مقاتلة المعارضة.':'تحاول الهروب من المعارضة.') + '</p>';
+  h += '<p><b>المرحلة ٣:</b> ' + (cArr[2].l==='B'?'الهزيمة التامة.':cArr[2].l==='R'?'ضرورة القتال من أجل البقاء.':'التراجع والاستسلام كلياً.') + '</p>';
+  h += '</div></div>';
+
+  // Analysis
+  h += '<div class="analysis-box"><div class="analysis-title">✨ تحليل شخصيتك الشامل</div>';
+  h += '<div class="analysis-text">';
+  h += '<p style="font-weight:700;font-size:13px;color:'+mvs.color+'">'+tx.summary+'</p>';
+  h += '<p>'+tx.strengths+'</p>';
+  h += '<p style="margin-bottom:0">'+tx.weaknesses+'</p></div></div>';
+
+  // Internal table
+  h += '<div class="tbl-wrap"><div style="font-size:14px;font-weight:700;margin-bottom:8px">التجربة الداخلية في حالة الصراع</div>';
+  h += '<table><thead><tr><th>المرحلة</th><th style="color:'+BL+'">أزرق</th><th style="color:'+RD+'">أحمر</th><th style="color:'+GR+'">أخضر</th></tr></thead><tbody>';
+  [['استيعاب احتياجات الآخرين ببساطة','الارتقاء إلى مستوى التحدي المعروض ببساطة','الحذر والحكمة ببساطة'],
+   ['الاستسلام وترك المعارضة للمضي في طريقها','ضرورة مقاتلة المعارضة','محاولة الهروب من المعارضة'],
+   ['الهزيمة التامة','ضرورة القتال من أجل البقاء (الحياة)','التراجع والاستسلام كلياً']].forEach(function(row,ri){
+    h += '<tr><td style="font-weight:700;text-align:center">'+(ri+1)+'</td>';
+    h += '<td style="background:#dbeafe">'+row[0]+'</td>';
+    h += '<td style="background:#fee2e2">'+row[1]+'</td>';
+    h += '<td style="background:#dcfce7">'+row[2]+'</td></tr>';
+  });
+  h += '</tbody></table></div>';
+
+  // Behavior table
+  h += '<div class="tbl-wrap"><div style="font-size:14px;font-weight:700;margin-bottom:8px">السلوك الظاهر في حالة الصراع</div>';
+  h += '<table><thead><tr><th>المرحلة</th><th style="color:'+BL+'">أزرق</th><th style="color:'+RD+'">أحمر</th><th style="color:'+GR+'">أخضر</th></tr></thead><tbody>';
+  [['احتواء الآخر','الارتفاع لمستوى التحدي','التزام الحذر'],
+   ['الاستسلام المشروط','المحاربة من أجل الفوز','التراجع للخلف والتحليل'],
+   ['الاستسلام التام','المحاربة من أجل البقاء','الانسحاب']].forEach(function(row,ri){
+    h += '<tr><td style="font-weight:700;text-align:center">'+(ri+1)+'</td>';
+    h += '<td style="background:#dbeafe">'+row[0]+'</td>';
+    h += '<td style="background:#fee2e2">'+row[1]+'</td>';
+    h += '<td style="background:#dcfce7">'+row[2]+'</td></tr>';
+  });
+  h += '</tbody></table></div>';
+
+  // Action buttons
+  if(isAdminView && result._adminInfo){
+    h += '<button class="btn-save" onclick="downloadAdminPDF('+result.id+',\''+escapeSingleQuote(result._adminInfo.name)+'\')">📥 تحميل تقرير PDF — '+result._adminInfo.name+'</button>';
+    h += '<button class="btn-rst" onclick="renderAdmin()" style="margin-top:6px">← رجوع للوحة الأدمن</button>';
+  } else {
+    h += '<button class="btn-save" onclick="downloadMyPDF()">📥 تحميل تقريري PDF</button>';
+    h += '<button onclick="backToQuiz()" style="width:100%;padding:10px;font-size:13px;font-weight:700;font-family:Tajawal;border:2px solid #2563eb;border-radius:8px;background:#eff6ff;color:#2563eb;cursor:pointer;margin-top:6px;display:flex;align-items:center;justify-content:center;gap:6px">← رجوع للأسئلة</button>';
+    if(currentUser && currentUser.isAdmin){
+      h += '<button onclick="renderAdmin()" style="width:100%;padding:10px;font-size:13px;font-weight:700;font-family:Tajawal;border:2px solid #f59e0b;border-radius:8px;background:#fef3c7;color:#92400e;cursor:pointer;margin-top:6px;display:flex;align-items:center;justify-content:center;gap:6px">⚙ رجوع للوحة الأدمن</button>';
+    }
+    h += '<button onclick="doLogout()" style="width:100%;padding:10px;font-size:13px;font-weight:700;font-family:Tajawal;border:2px solid #dc2626;border-radius:8px;background:#fff;color:#dc2626;cursor:pointer;margin-top:6px;display:flex;align-items:center;justify-content:center;gap:6px">🚪 خروج من البرنامج</button>';
+  }
+  h += '</div>';
+
+  document.getElementById('step-quiz').classList.add('hidden');
+  document.getElementById('admin-panel').classList.add('hidden');
+  var rEl = document.getElementById('results');
+  rEl.innerHTML = h;
+  rEl.classList.remove('hidden');
+
+  setTimeout(function(){ drawTriangle(cols, mvs); }, 50);
+  setTimeout(function(){ rEl.scrollIntoView({behavior:'smooth'}); }, 100);
+}
+
+function escapeSingleQuote(s){ return String(s).replace(/'/g, "\\'"); }
+
+// ============================================================
+// TRIANGLE DRAWING (unchanged from original)
+// ============================================================
+function drawTriangle(cols, mvs){
+  var cv = document.getElementById('sdi-canvas'); if(!cv) return;
+  var W=500, H=520, d=window.devicePixelRatio||2;
+  cv.width=W*d; cv.height=H*d; cv.style.width=W+'px'; cv.style.height='auto';
+  var c = cv.getContext('2d'); c.scale(d,d); c.clearRect(0,0,W,H);
+
+  var pad=70;
+  var TL=[pad,60], TR=[W-pad,60], BT=[W/2,H-40];
+  var cx=(TL[0]+TR[0]+BT[0])/3, cy=(TL[1]+TR[1]+BT[1])/3;
+
+  c.globalAlpha=0.1;
+  var g1=c.createLinearGradient(TL[0],TL[1],cx,cy); g1.addColorStop(0,'#3b82f6'); g1.addColorStop(1,'#93c5fd');
+  c.fillStyle=g1; c.beginPath(); c.moveTo(TL[0],TL[1]); c.lineTo((TL[0]+TR[0])/2,TL[1]); c.lineTo(cx,cy); c.lineTo((TL[0]+BT[0])/2,(TL[1]+BT[1])/2); c.closePath(); c.fill();
+  var g2=c.createLinearGradient(TR[0],TR[1],cx,cy); g2.addColorStop(0,'#ef4444'); g2.addColorStop(1,'#fca5a5');
+  c.fillStyle=g2; c.beginPath(); c.moveTo(TR[0],TR[1]); c.lineTo((TL[0]+TR[0])/2,TR[1]); c.lineTo(cx,cy); c.lineTo((TR[0]+BT[0])/2,(TR[1]+BT[1])/2); c.closePath(); c.fill();
+  var g3=c.createLinearGradient(BT[0],BT[1],cx,cy); g3.addColorStop(0,'#22c55e'); g3.addColorStop(1,'#86efac');
+  c.fillStyle=g3; c.beginPath(); c.moveTo(BT[0],BT[1]); c.lineTo((TL[0]+BT[0])/2,(TL[1]+BT[1])/2); c.lineTo(cx,cy); c.lineTo((TR[0]+BT[0])/2,(TR[1]+BT[1])/2); c.closePath(); c.fill();
+  c.globalAlpha=1;
+
+  c.strokeStyle='#cbd5e1'; c.lineWidth=0.4;
+  for(var i=1; i<10; i++){ var t=i/10;
+    c.beginPath(); c.moveTo(TL[0]+(BT[0]-TL[0])*t, TL[1]+(BT[1]-TL[1])*t); c.lineTo(TR[0]+(BT[0]-TR[0])*t, TR[1]+(BT[1]-TR[1])*t); c.stroke();
+    c.beginPath(); c.moveTo(TL[0]+(TR[0]-TL[0])*t, TL[1]); c.lineTo(TL[0]+(BT[0]-TL[0])*t, TL[1]+(BT[1]-TL[1])*t); c.stroke();
+    c.beginPath(); c.moveTo(TR[0]+(TL[0]-TR[0])*t, TR[1]); c.lineTo(TR[0]+(BT[0]-TR[0])*t, TR[1]+(BT[1]-TR[1])*t); c.stroke();
+  }
+
+  c.font='bold 8px Tajawal,sans-serif'; c.fillStyle='#94a3b8'; c.textAlign='center';
+  for(var i=1; i<=10; i++){ var t=i/10;
+    var lx=TL[0]+(BT[0]-TL[0])*t, ly=TL[1]+(BT[1]-TL[1])*t;
+    c.fillText(i*10, lx-16, ly+3);
+    var rx=TR[0]+(BT[0]-TR[0])*t, ry=TR[1]+(BT[1]-TR[1])*t;
+    c.fillText(i*10, rx+16, ry+3);
+  }
+
+  c.beginPath(); c.moveTo(TL[0],TL[1]); c.lineTo(TR[0],TR[1]); c.lineTo(BT[0],BT[1]); c.closePath();
+  c.strokeStyle='#1e293b'; c.lineWidth=2.5; c.stroke();
+
+  c.textBaseline='middle';
+  c.font='bold 11px Tajawal,sans-serif'; c.fillStyle=BL; c.textAlign='center';
+  c.fillText('إيثار الآخرين', TL[0], TL[1]-24);
+  c.fillText('الرعاية (أزرق)', TL[0], TL[1]-10);
+  c.fillStyle=RD;
+  c.fillText('الجزم — التوجيه', TR[0], TR[1]-24);
+  c.fillText('(أحمر)', TR[0], TR[1]-10);
+  c.fillStyle=GR;
+  c.fillText('التحليل — الاستقلالية', BT[0], BT[1]+14);
+  c.fillText('(أخضر)', BT[0], BT[1]+28);
+  c.font='10px Tajawal,sans-serif'; c.fillStyle=HB;
+  c.fillText('دوافع المرونة', cx, cy+4);
+  c.font='bold 9px Tajawal,sans-serif'; c.fillStyle='#64748b';
+  c.fillText('الجزم — الرعاية', (TL[0]+TR[0])/2, TL[1]+14);
+  var lmx=(TL[0]+BT[0])/2, lmy=(TL[1]+BT[1])/2;
+  c.fillText('الدعم والمساندة', lmx-28, lmy);
+  var rmx=(TR[0]+BT[0])/2, rmy=(TR[1]+BT[1])/2;
+  c.fillText('التعقل — المنافسة', rmx+28, rmy);
+
+  function toP(bl,rd,gr){ var s=bl+rd+gr; if(s===0) return [cx,cy]; return [(bl/s)*TL[0]+(rd/s)*TR[0]+(gr/s)*BT[0], (bl/s)*TL[1]+(rd/s)*TR[1]+(gr/s)*BT[1]]; }
+  var mp = toP(cols[0],cols[1],cols[2]);
+  var cp = toP(cols[3],cols[4],cols[5]);
+
+  var dx=cp[0]-mp[0], dy=cp[1]-mp[1], ln=Math.sqrt(dx*dx+dy*dy);
+  if(ln>3){
+    var nx=dx/ln, ny=dy/ln, px=-ny, py=nx;
+    var aSize=16;
+    c.beginPath();
+    c.moveTo(mp[0],mp[1]);
+    c.lineTo(cp[0]-nx*aSize, cp[1]-ny*aSize);
+    c.strokeStyle='#333'; c.lineWidth=2; c.setLineDash([]); c.stroke();
+
+    c.beginPath();
+    c.moveTo(cp[0],cp[1]);
+    c.lineTo(cp[0]-nx*aSize+px*(aSize*0.6), cp[1]-ny*aSize+py*(aSize*0.6));
+    c.lineTo(cp[0]-nx*aSize-px*(aSize*0.6), cp[1]-ny*aSize-py*(aSize*0.6));
+    c.closePath();
+    c.fillStyle=mvs.color; c.globalAlpha=0.85; c.fill();
+    c.strokeStyle='#fff'; c.lineWidth=1.5; c.stroke(); c.globalAlpha=1;
+
+    var lbOff=px*24+nx*5, lbOffy=py*24+ny*5;
+    var lbx=Math.max(40,Math.min(W-40, cp[0]+lbOff));
+    var lby=Math.max(20,Math.min(H-10, cp[1]+lbOffy));
+    c.fillStyle='#555'; c.font='bold 9px Tajawal,sans-serif'; c.textAlign='center'; c.textBaseline='middle';
+    c.fillText('رأس السهم', lbx, lby);
+  }
+
+  c.beginPath(); c.arc(mp[0],mp[1],10,0,Math.PI*2);
+  c.fillStyle=mvs.color; c.fill();
+  c.strokeStyle='#fff'; c.lineWidth=3; c.stroke();
+  c.strokeStyle='#333'; c.lineWidth=1; c.stroke();
+
+  var dlx=mp[0], dly=mp[1]-20;
+  var toCx=cx-mp[0], toCy=cy-mp[1];
+  var toLen=Math.sqrt(toCx*toCx+toCy*toCy);
+  if(toLen>0 && (dly < TL[1]+5 || mp[0]<TL[0]+25 || mp[0]>TR[0]-25 || mp[1]>BT[1]-30)){
+    dlx = mp[0]+(toCx/toLen)*28;
+    dly = mp[1]+(toCy/toLen)*28;
+  }
+  c.fillStyle='#1e293b'; c.font='bold 10px Tajawal,sans-serif'; c.textAlign='center'; c.textBaseline='middle';
+  c.fillText('النقطة', dlx, dly);
+}
+
+function doReset(){
+  for(var i=0; i<20; i++){
+    for(var j=0; j<3; j++){
+      document.getElementById('q'+i+'-'+j).value='';
+      document.getElementById('optw'+i+'-'+j).style.background='#fff';
+      document.getElementById('q'+i+'-'+j).style.borderColor='#d1d5db';
+    }
+    document.getElementById('qb'+i).className='qb';
+    document.getElementById('rs'+i).innerHTML='المجموع: 0/10';
+  }
+  updateTotals();
+  document.getElementById('results').classList.add('hidden');
+  document.getElementById('err-box').innerHTML='';
+  document.getElementById('step-quiz').classList.remove('hidden');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function backToQuiz(){
+  document.getElementById('results').classList.add('hidden');
+  document.getElementById('step-quiz').classList.remove('hidden');
+  if(currentUser && currentUser.isAdmin) document.getElementById('btn-admin-back').classList.remove('hidden');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function hideAll(){ ['landing','form-new','form-login','form-forgot'].forEach(function(id){ document.getElementById(id).classList.add('hidden'); }); }
+function showLanding(){ hideAll(); document.getElementById('landing').classList.remove('hidden'); }
+function showNewReg(){ hideAll(); document.getElementById('form-new').classList.remove('hidden'); }
+function showLogin(){ hideAll(); document.getElementById('form-login').classList.remove('hidden'); }
+function showForgot(){
+  hideAll(); document.getElementById('form-forgot').classList.remove('hidden');
+  document.getElementById('fg-s1').classList.remove('hidden');
+  document.getElementById('fg-s2').classList.add('hidden');
+  document.getElementById('fg-s3').classList.add('hidden');
+  document.getElementById('forgot-result').innerHTML='';
+  document.getElementById('forgot-btn').textContent='التالي ←';
+  document.getElementById('forgot-btn').style.background='linear-gradient(135deg,#92400e,#f59e0b)';
+  document.getElementById('forgot-btn').style.display='';
+  document.getElementById('f-email').value='';
+  forgotStep=0; forgotEmail=null; forgotSecurityQ=null;
+}
+
+var SQ_MAP = {
+  'city':'ما اسم المدينة التي وُلدت فيها؟',
+  'school':'ما اسم أول مدرسة درست فيها؟',
+  'friend':'ما اسم أقرب صديق في طفولتك؟',
+  'pet':'ما اسم حيوانك الأليف الأول؟',
+  'mother':'ما اسم والدتك الأول؟'
+};
+var forgotStep=0, forgotEmail=null, forgotSecurityQ=null;
+
+async function doForgot(){
+  var res = document.getElementById('forgot-result');
+  if(forgotStep === 0){
+    var em = document.getElementById('f-email').value.trim();
+    if(!em || !em.includes('@')){ res.innerHTML = '<div class="errmsg">يرجى إدخال بريد إلكتروني صحيح</div>'; return; }
+    try{
+      var r = await api('/api/auth/forgot/check-email', { method:'POST', body:{ email: em } });
+      forgotEmail = em; forgotSecurityQ = r.securityQ; forgotStep = 1;
+      document.getElementById('fg-s1').classList.add('hidden');
+      document.getElementById('fg-s2').classList.remove('hidden');
+      document.getElementById('fg-sq-text').textContent = SQ_MAP[r.securityQ] || r.securityQ;
+      res.innerHTML='';
+    }catch(e){
+      res.innerHTML = '<div class="errmsg">'+e.message+'<br><a href="javascript:showNewReg()" style="color:#2563eb;font-weight:600">سجّل حساب جديد</a></div>';
+    }
+    return;
+  }
+  if(forgotStep === 1){
+    var ans = document.getElementById('f-sa').value.trim();
+    if(!ans){ res.innerHTML = '<div class="errmsg">يرجى إدخال إجابة سؤال الأمان</div>'; return; }
+    // Move to step 2 locally — will validate on final submit
+    forgotStep = 2;
+    window._forgotAnswer = ans;
+    document.getElementById('fg-s2').classList.add('hidden');
+    document.getElementById('fg-s3').classList.remove('hidden');
+    document.getElementById('forgot-btn').textContent = 'حفظ كلمة المرور الجديدة';
+    document.getElementById('forgot-btn').style.background = 'linear-gradient(135deg,#0f172a,#1e40af)';
+    res.innerHTML='';
+    return;
+  }
+  if(forgotStep === 2){
+    var np = document.getElementById('f-newpass').value;
+    var np2 = document.getElementById('f-newpass2').value;
+    if(!np || np.length < 4){ res.innerHTML = '<div class="errmsg">كلمة المرور يجب أن تكون 4 أحرف على الأقل</div>'; return; }
+    if(np !== np2){ res.innerHTML = '<div class="errmsg">كلمتا المرور غير متطابقتين</div>'; return; }
+    try{
+      await api('/api/auth/forgot/reset', { method:'POST', body:{ email: forgotEmail, securityAnswer: window._forgotAnswer, newPassword: np } });
+      var savedEmail = forgotEmail;
+      forgotEmail = null; forgotStep = 0; window._forgotAnswer = null;
+      document.getElementById('fg-s3').classList.add('hidden');
+      document.getElementById('forgot-btn').style.display='none';
+      res.innerHTML = '<div style="background:#dcfce7;border:2px solid #16a34a;border-radius:10px;padding:14px;text-align:center"><div style="font-size:16px;margin-bottom:4px">🎉</div><div style="font-size:14px;font-weight:800;color:#166534;margin-bottom:6px">تم تغيير كلمة المرور بنجاح!</div><button onclick="showLogin();setTimeout(function(){document.getElementById(\'l-email\').value=\''+savedEmail+'\'},100)" style="background:#2563eb;color:#fff;border:none;border-radius:8px;padding:9px 24px;font-size:13px;font-weight:700;font-family:Tajawal;cursor:pointer">← تسجيل الدخول الآن</button></div>';
+    }catch(e){
+      res.innerHTML = '<div class="errmsg">'+e.message+'</div>';
+    }
+  }
+}
+
+// ============================================================
+// AUTH: LOGIN / REGISTER / LOGOUT
+// ============================================================
+async function doLogin(){
+  var em = document.getElementById('l-email').value.trim();
+  var pw = document.getElementById('l-pass').value;
+  var err = document.getElementById('login-err');
+  if(!em || !pw){ err.innerHTML = '<div class="errmsg">يرجى إدخال البريد وكلمة المرور</div>'; return; }
+  err.innerHTML = '';
+  try{
+    var r = await api('/api/auth/login', { method:'POST', body:{ email: em, password: pw } });
+    saveAuth(r.token, r.user);
+    currentUser = r.user;
+    document.getElementById('l-email').value=''; document.getElementById('l-pass').value='';
+    if(currentUser.isAdmin){ await renderAdmin(); }
+    else { enterQuizUI(); }
+  }catch(e){
+    if(e.status === 401) err.innerHTML = '<div class="errmsg">'+e.message+' <a href="javascript:showForgot()" style="color:#f59e0b">نسيت كلمة المرور؟</a></div>';
+    else err.innerHTML = '<div class="errmsg">'+e.message+'</div>';
+  }
+}
+
+async function doRegister(){
+  var body = {
+    name:       document.getElementById('r-name').value.trim(),
+    email:      document.getElementById('r-email').value.trim(),
+    country:    document.getElementById('r-country').value,
+    phone:      document.getElementById('r-phone').value.trim(),
+    password:   document.getElementById('r-pass').value,
+    securityQ:  document.getElementById('r-sq').value,
+    securityA:  document.getElementById('r-sa').value.trim(),
+    waJoined:   document.getElementById('wa-j').checked,
+  };
+  var err = document.getElementById('reg-err');
+  var pw2 = document.getElementById('r-pass2').value;
+  var missing = [];
+  if(!body.name) missing.push('الاسم');
+  if(!body.email || !body.email.includes('@')) missing.push('البريد');
+  if(!body.country) missing.push('الدولة');
+  if(!body.phone || body.phone.length<8) missing.push('الجوال');
+  if(!body.password || body.password.length<4) missing.push('كلمة المرور (4 أحرف على الأقل)');
+  if(body.password !== pw2) missing.push('تأكيد كلمة المرور غير متطابق');
+  if(!body.securityQ) missing.push('سؤال الأمان');
+  if(!body.securityA) missing.push('إجابة سؤال الأمان');
+  if(!body.waJoined) missing.push('الانضمام لقناة الواتساب');
+  if(missing.length){ err.innerHTML = '<div class="errmsg">يرجى استكمال: '+missing.join('، ')+'</div>'; return; }
+  err.innerHTML='';
+  try{
+    var r = await api('/api/auth/register', { method:'POST', body: body });
+    saveAuth(r.token, r.user);
+    currentUser = r.user;
+    if(currentUser.isAdmin){ await renderAdmin(); }
+    else { enterQuizUI(); }
+  }catch(e){
+    if(e.status === 409) err.innerHTML = '<div class="errmsg">'+e.message+'. <a href="javascript:showLogin()" style="color:#2563eb;font-weight:600">سجّل دخول</a></div>';
+    else err.innerHTML = '<div class="errmsg">'+e.message+'</div>';
+  }
+}
+
+function enterQuizUI(){
+  document.getElementById('step-reg').classList.add('hidden');
+  document.getElementById('admin-panel').classList.add('hidden');
+  document.getElementById('results').classList.add('hidden');
+  document.getElementById('step-quiz').classList.remove('hidden');
+  document.getElementById('user-greet').textContent = '👋 مرحباً ' + (currentUser ? currentUser.name : '');
+  if(currentUser && currentUser.isAdmin) document.getElementById('btn-admin-back').classList.remove('hidden');
+  else document.getElementById('btn-admin-back').classList.add('hidden');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function doLogout(){
+  clearAuth();
+  currentUser = null;
+  lastResultId = null;
+  document.getElementById('step-quiz').classList.add('hidden');
+  document.getElementById('results').classList.add('hidden');
+  document.getElementById('admin-panel').classList.add('hidden');
+  document.getElementById('step-reg').classList.remove('hidden');
+  showLanding();
+  ['l-email','l-pass'].forEach(function(id){ var el=document.getElementById(id); if(el) el.value=''; });
+  var err = document.getElementById('login-err'); if(err) err.innerHTML='';
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// ============================================================
+// PDF DOWNLOAD
+// ============================================================
+async function downloadMyPDF(){
+  try{
+    if(lastResultId){
+      await apiDownload('/api/pdf/my/' + lastResultId, 'SDI-report.pdf');
+    } else {
+      await apiDownload('/api/pdf/my/latest', 'SDI-report.pdf');
+    }
+  }catch(e){
+    alert('تعذر تحميل التقرير: ' + e.message);
+  }
+}
+
+async function downloadAdminPDF(resultId, userName){
+  try{
+    await apiDownload('/api/pdf/admin/result/' + resultId, 'SDI-admin-'+userName+'.pdf');
+  }catch(e){
+    alert('تعذر تحميل التقرير: ' + e.message);
+  }
+}
+
+// ============================================================
+// ADMIN PANEL
+// ============================================================
+async function renderAdmin(){
+  if(!currentUser || !currentUser.isAdmin){ showLanding(); return; }
+  document.getElementById('step-reg').classList.add('hidden');
+  document.getElementById('step-quiz').classList.add('hidden');
+  document.getElementById('results').classList.add('hidden');
+  var ap = document.getElementById('admin-panel');
+  ap.innerHTML = '<div class="admin-panel" style="text-align:center;padding:30px"><div style="font-size:14px;color:#6b7280">⏳ جارٍ تحميل البيانات...</div></div>';
+  ap.classList.remove('hidden');
+
+  try{
+    var [statsResp, usersResp] = await Promise.all([
+      api('/api/admin/stats'),
+      api('/api/admin/users')
+    ]);
+    var stats = statsResp.stats;
+    var users = usersResp.users;
+
+    var h = '<div class="admin-panel"><h2>⚙ لوحة الأدمن — مرحباً ' + currentUser.name + '</h2>';
+    h += '<div class="admin-stats">';
+    h += '<div class="admin-stat"><div class="n">'+stats.totalUsers+'</div><div class="l">مسجلين</div></div>';
+    h += '<div class="admin-stat"><div class="n">'+stats.completed+'</div><div class="l">أكملوا</div></div>';
+    h += '<div class="admin-stat"><div class="n">'+stats.totalAttempts+'</div><div class="l">استخدامات</div></div>';
+    h += '</div>';
+
+    // MVS distribution
+    var mvsNames = {B:'أزرق — الرعاية', R:'أحمر — الجزم', G:'أخضر — التحليل', Hub:'المحور', BR:'الجزم-الرعاية', BG:'الحذر-المساندة', RG:'التعقل-المنافسة'};
+    var mvsColors = {B:'#2563eb', R:'#dc2626', G:'#16a34a', Hub:'#7c3aed', BR:'#9333ea', BG:'#0891b2', RG:'#ea580c'};
+    var dist = stats.mvsDistribution || {};
+    var totalCompleted = stats.completed || 1;
+    h += '<div style="margin-bottom:12px"><div style="font-size:13px;font-weight:700;margin-bottom:6px">توزيع الأنماط</div>';
+    Object.keys(mvsNames).forEach(function(k){
+      var n = dist[k] || 0;
+      if(n > 0){
+        var pct = Math.round(n / totalCompleted * 100);
+        h += '<div style="display:flex;align-items:center;gap:6px;margin-bottom:3px">';
+        h += '<span style="font-size:10px;width:110px;color:'+mvsColors[k]+';font-weight:700">'+mvsNames[k]+'</span>';
+        h += '<div style="flex:1;height:14px;background:#f1f5f9;border-radius:8px;overflow:hidden"><div style="height:100%;width:'+pct+'%;background:'+mvsColors[k]+';border-radius:8px"></div></div>';
+        h += '<span style="font-size:10px;width:24px">'+n+'</span></div>';
+      }
+    });
+    h += '</div>';
+
+    // Users list
+    h += '<div style="font-size:13px;font-weight:700;margin-bottom:8px">المستخدمون ('+users.length+')</div>';
+    users.forEach(function(u){
+      h += '<div class="user-card"><h4>'+escHtml(u.name)+'</h4>';
+      h += '<div class="meta">📧 '+escHtml(u.email)+' | 📱 '+escHtml(u.phone||'—')+' | 🌍 '+escHtml(u.country||'—');
+      h += '<br>📅 '+new Date(u.createdAt).toLocaleDateString('ar-EG')+' | 🔄 '+(u.attempts||0)+' استخدام</div>';
+      if(u.result){
+        var r = u.result;
+        h += '<div class="rp" style="border-right:3px solid '+r.mvs.color+'">';
+        h += '<b style="color:'+r.mvs.color+'">'+escHtml(r.mvs.name)+'</b> | الصراع: '+r.conflictKey;
+        h += '<br><span style="font-size:9px">B:'+r.cols[0]+' R:'+r.cols[1]+' G:'+r.cols[2]+' | صراع B:'+r.cols[3]+' R:'+r.cols[4]+' G:'+r.cols[5]+'</span></div>';
+        h += '<div style="display:flex;gap:4px;margin-top:6px">';
+        h += '<button class="btn-calc" style="flex:1;padding:5px;font-size:11px" onclick="adminViewResult('+r.id+')">👁 عرض النتيجة</button>';
+        h += '<button style="padding:5px 10px;font-size:11px;font-weight:700;font-family:Tajawal;border:1.5px solid #059669;border-radius:6px;background:#fff;color:#059669;cursor:pointer" onclick="downloadAdminPDF('+r.id+',\''+escapeSingleQuote(u.name)+'\')">📥 PDF</button>';
+        h += '<button style="padding:5px 10px;font-size:11px;font-weight:700;font-family:Tajawal;border:1.5px solid #dc2626;border-radius:6px;background:#fff;color:#dc2626;cursor:pointer" onclick="adminDeleteUser('+u.id+',\''+escapeSingleQuote(u.name)+'\')">🗑 حذف</button>';
+        h += '</div>';
+      }else{
+        h += '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px">';
+        h += '<span style="font-size:10px;color:#f59e0b">⏳ لم يكمل</span>';
+        h += '<button style="padding:3px 10px;font-size:10px;font-weight:700;font-family:Tajawal;border:1.5px solid #dc2626;border-radius:6px;background:#fff;color:#dc2626;cursor:pointer" onclick="adminDeleteUser('+u.id+',\''+escapeSingleQuote(u.name)+'\')">🗑 حذف</button>';
+        h += '</div>';
+      }
+      h += '</div>';
+    });
+
+    h += '<button class="btn-save" onclick="adminExportCSV()" style="margin-top:10px">📊 تصدير CSV</button>';
+    h += '<button class="btn-calc" onclick="adminGoToQuiz()" style="margin-top:6px">📝 الذهاب للاختبار</button>';
+    h += '<button class="btn-rst" onclick="doLogout()" style="margin-top:6px">🚪 خروج كامل</button>';
+    h += '</div>';
+
+    ap.innerHTML = h;
+    window.scrollTo({top:0, behavior:'smooth'});
+  }catch(e){
+    ap.innerHTML = '<div class="admin-panel"><div class="errmsg">تعذر تحميل البيانات: '+e.message+'</div><button class="btn-rst" onclick="doLogout()" style="margin-top:10px">🚪 خروج</button></div>';
+  }
+}
+
+function escHtml(s){
+  if(s === null || s === undefined) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+async function adminViewResult(resultId){
+  try{
+    var r = await api('/api/results/' + resultId);
+    var result = r.result;
+    result._adminInfo = { name: r.user.name, email: r.user.email };
+    renderResults(result, true);
+  }catch(e){
+    alert('تعذر العرض: ' + e.message);
+  }
+}
+
+async function adminDeleteUser(userId, userName){
+  if(!confirm('هل أنت متأكد من حذف حساب "'+userName+'"؟\n\nسيتم حذف جميع بياناته ونتائجه نهائياً.')) return;
+  try{
+    await api('/api/admin/users/'+userId, { method:'DELETE' });
+    await renderAdmin();
+  }catch(e){
+    alert('تعذر الحذف: ' + e.message);
+  }
+}
+
+async function adminExportCSV(){
+  try{
+    await apiDownload('/api/admin/export/csv', 'sdi-data.csv');
+  }catch(e){
+    alert('تعذر التصدير: ' + e.message);
+  }
+}
+
+function adminGoToQuiz(){
+  document.getElementById('admin-panel').classList.add('hidden');
+  document.getElementById('results').classList.add('hidden');
+  document.getElementById('step-quiz').classList.remove('hidden');
+  document.getElementById('user-greet').textContent = '👋 مرحباً ' + currentUser.name + ' (أدمن)';
+  document.getElementById('btn-admin-back').classList.remove('hidden');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// ============================================================
+// INIT
+// ============================================================
+buildSection(1, 'sec1');
+buildSection(2, 'sec2');
+
+// Auto-restore session if token is still valid
+(async function(){
+  var tk = getToken();
+  var stored = getStoredUser();
+  if(tk && stored){
+    try{
+      var r = await api('/api/auth/me');
+      currentUser = r.user;
+      if(currentUser.isAdmin) renderAdmin();
+      else enterQuizUI();
+    }catch(_){
+      clearAuth();
+      showLanding();
+    }
+  }
+})();
+</script>
+
+</body>
+</html>
