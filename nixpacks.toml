@@ -1,0 +1,49 @@
+# nixpacks.toml
+# إعداد نشر Railway: تحميل Chromium والمكتبات اللازمة لـ Puppeteer
+
+[phases.setup]
+nixPkgs = [
+  "nodejs_20",
+  "chromium",
+  "fontconfig",
+  "freetype",
+  "harfbuzz",
+  "nss",
+  "nspr",
+  "cups",
+  "dbus",
+  "libxkbcommon",
+  "mesa",
+  "glib",
+  "pango",
+  "cairo",
+  "at-spi2-atk",
+  "libdrm",
+  "xorg.libX11",
+  "xorg.libxcb",
+  "xorg.libXcomposite",
+  "xorg.libXcursor",
+  "xorg.libXdamage",
+  "xorg.libXext",
+  "xorg.libXfixes",
+  "xorg.libXi",
+  "xorg.libXrandr",
+  "xorg.libXrender",
+  "xorg.libXScrnSaver",
+  "xorg.libXtst",
+  "alsa-lib",
+  "expat",
+]
+
+[phases.install]
+cmds = [
+  "npm ci --include=dev || npm install"
+]
+
+[variables]
+# Use system Chromium instead of downloading
+PUPPETEER_SKIP_DOWNLOAD = "true"
+PUPPETEER_EXECUTABLE_PATH = "/nix/var/nix/profiles/default/bin/chromium"
+
+[start]
+cmd = "npm run migrate && npm start"
